@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RunningTracker</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyB3PpsI0WGPR_WPhvpaLjrw68Omhv10IS0</string>
 </resources>
