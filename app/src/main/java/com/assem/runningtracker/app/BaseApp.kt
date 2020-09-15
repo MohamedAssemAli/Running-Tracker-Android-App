@@ -2,6 +2,7 @@ package com.assem.runningtracker.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 
 
 /**
@@ -9,7 +10,13 @@ import dagger.hilt.android.HiltAndroidApp
  * mohamed.assem.ali@gmail.com
  */
 
+// we need to annotate this app class to mark our app as injectable
 @HiltAndroidApp
 class BaseApp : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        Timber.plant(Timber.DebugTree())
+    }
 
 }
