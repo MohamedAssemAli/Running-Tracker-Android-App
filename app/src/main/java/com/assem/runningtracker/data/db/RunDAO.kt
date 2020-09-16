@@ -7,7 +7,14 @@ import androidx.room.*
 interface RunDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPlot(plot: Plot)
+
+    @Query("SELECT * FROM plot")
+    fun getAllPlots(): LiveData<List<Plot>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRun(run: Run)
+
 
     @Delete
     suspend fun deleteRun(run: Run)
