@@ -52,7 +52,7 @@ class TrackingService : LifecycleService() {
         super.onCreate()
         postInitialValues()
         fusedLocationProviderClient = FusedLocationProviderClient(this)
-        isTracking.observe(this, Observer {
+        isTracking.observe(this, {
             updateLocationTracking(it)
         })
     }
@@ -76,10 +76,12 @@ class TrackingService : LifecycleService() {
                         isFirstRun = false
                     } else {
                         Timber.d("Resuming service...")
+                        startForegroundService()
                     }
                 }
                 ACTION_PAUSE_SERVICE -> {
                     Timber.d("Paused service")
+                    pauseTrackingService()
                 }
                 ACTION_STOP_SERVICE -> {
                     Timber.d("Stopped service")
@@ -87,6 +89,10 @@ class TrackingService : LifecycleService() {
             }
         }
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    private fun pauseTrackingService() {
+        isTracking.postValue(false)
     }
 
     @SuppressLint("MissingPermission")
@@ -109,70 +115,14 @@ class TrackingService : LifecycleService() {
         }
     }
 
-    /*
-    // wadi degla ocotober
-    start lat2 + long2 = 29.964042, 30.963758
-    start lat4 + long4 = 29.965796, 30.966464
-
-    end lat1 + long1 = 29.971712, 30.957243
-    end lat3 + long3 = 29.973405, 30.959912
-
-    // place before
-    29.962015, 30.968805
-
-    // place inside
-    29.968242, 30.962053
-
-    // place after
-    29.977700, 30.952824
-     */
-
-    private var plot1 =
-        Plot(29.965796, 30.966464, 29.964042, 30.963758, 29.973405, 30.959912, 29.971712, 30.957243)
-
-    private var startLocation1 = Location("start1")
-    private var startLocation2 = Location("start2")
-    private var endLocation1 = Location("end2")
-    private var endLocation2 = Location("end2")
-
-
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult?) {
             super.onLocationResult(result)
-
-            startLocation1.latitude = plot1.lat1
-            startLocation1.longitude = plot1.long1
-
-            startLocation2.latitude = plot1.lat3
-            startLocation2.longitude = plot1.long3
-
-            endLocation1.latitude = plot1.lat2
-            endLocation1.longitude = plot1.long2
-
-            endLocation2.latitude = plot1.lat4
-            endLocation2.longitude = plot1.long4
-
             if (isTracking.value!!) {
                 result?.locations?.let { locations ->
                     for (location in locations) {
-                        if (
-                            location.latitude > startLocation1.latitude && location.latitude > startLocation2.latitude
-                            && location.latitude < endLocation1.latitude && location.latitude < endLocation2.latitude
-                            && location.longitude < startLocation1.longitude && location.longitude < startLocation2.longitude
-                            && location.longitude > endLocation1.longitude && location.longitude > endLocation2.longitude
-                        ) {
-                            Timber.d("Assem is inside the plot")
-                        } else if (
-                            location.latitude > endLocation1.latitude && location.latitude > endLocation2.latitude
-                        ) {
-                            Timber.d("Assem is after the plot")
-                        } else if (
-                            location.latitude < startLocation1.latitude && location.latitude < startLocation2.latitude
-                        ) {
-                            Timber.d("Assem is before the plot")
-                        }
                         addPathPoints(location)
-//                        Timber.d("Assem New Location => ${location.latitude}, ${location.longitude}")
+                        Timber.d("New Location: ${location.latitude} + ${location.longitude}")
                     }
                 }
             }
@@ -236,3 +186,84 @@ class TrackingService : LifecycleService() {
         notificationManager.createNotificationChannel(channel)
     }
 }
+
+/*
+
+    /*
+    // wadi degla ocotober
+    start lat2 + long2 = 29.964042, 30.963758
+    start lat4 + long4 = 29.965796, 30.966464
+
+    end lat1 + long1 = 29.971712, 30.957243
+    end lat3 + long3 = 29.973405, 30.959912
+
+    // place before
+    29.962015, 30.968805
+
+    // place inside
+    29.968242, 30.962053
+
+    // place after
+    29.977700, 30.952824
+     */
+
+    private var plot1 =
+        Plot(29.965796, 30.966464, 29.964042, 30.963758, 29.973405, 30.959912, 29.971712, 30.957243)
+
+    private var startLocation1 = Location("start1")
+    private var startLocation2 = Location("start2")
+    private var endLocation1 = Location("end2")
+    private var endLocation2 = Location("end2")
+
+
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(result: LocationResult?) {
+            super.onLocationResult(result)
+
+            startLocation1.latitude = plot1.lat1
+            startLocation1.longitude = plot1.long1
+
+            startLocation2.latitude = plot1.lat3
+            startLocation2.longitude = plot1.long3
+
+            endLocation1.latitude = plot1.lat2
+            endLocation1.longitude = plot1.long2
+
+            endLocation2.latitude = plot1.lat4
+            endLocation2.longitude = plot1.long4
+
+            if (isTracking.value!!) {
+                result?.locations?.let { locations ->
+                    for (location in locations) {
+                        if (
+                            location.latitude > startLocation1.latitude && location.latitude > startLocation2.latitude
+                            && location.latitude < endLocation1.latitude && location.latitude < endLocation2.latitude
+                            && location.longitude < startLocation1.longitude && location.longitude < startLocation2.longitude
+                            && location.longitude > endLocation1.longitude && location.longitude > endLocation2.longitude
+                        ) {
+                            Timber.d("Assem is inside the plot")
+                        } else{
+                            Timber.d("Assem is outside the plot")
+                        }
+                            /*
+                            if (
+                            location.latitude > endLocation1.latitude && location.latitude > endLocation2.latitude
+                        ) {
+                            Timber.d("Assem is after the plot")
+                        } else if (
+                            location.latitude < startLocation1.latitude && location.latitude < startLocation2.latitude
+                        ) {
+                            Timber.d("Assem is before the plot")
+                        }*/
+                        /*
+ */
+                        addPathPoints(location)
+//                        Timber.d("Assem New Location => ${location.latitude}, ${location.longitude}")
+                    }
+                }
+            }
+        }
+    }
+
+
+ */

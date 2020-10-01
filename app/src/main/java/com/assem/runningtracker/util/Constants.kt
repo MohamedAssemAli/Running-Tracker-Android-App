@@ -1,5 +1,7 @@
 package com.assem.runningtracker.util
 
+import android.graphics.Color
+
 
 /**
  * Created by Mohamed Assem on 15-Sep-20.
@@ -18,4 +20,7 @@ object Constants {
     const val NOTIFICATION_ID = 1
     const val LOCATION_UPDATE_INTERVAL = 5000L
     const val FASTEST_LOCATION_INTERVAL = 2000L
+    const val POLYLINE_COLOR = "#59dbe0"
+    const val POLYLINE_WIDTH = 8f
+    const val MAP_ZOOM = 15f
 }
