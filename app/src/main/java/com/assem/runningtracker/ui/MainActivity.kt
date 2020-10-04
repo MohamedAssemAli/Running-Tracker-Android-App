@@ -1,10 +1,9 @@
 package com.assem.runningtracker.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.assem.runningtracker.R
@@ -28,10 +27,12 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
+        // to prevent reloading the current selected fragment
+        bottomNavigationView.setOnNavigationItemReselectedListener { }
 
         navHostFragment.findNavController()
             .addOnDestinationChangedListener { _, destination, _ ->
-                when(destination.id) {
+                when (destination.id) {
                     R.id.settingsFragment, R.id.runFragment, R.id.statisticsFragment ->
                         bottomNavigationView.visibility = View.VISIBLE
                     else -> bottomNavigationView.visibility = View.GONE
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToTrackingFragmentIfNeeded(intent: Intent?) {
-        if(intent?.action == ACTION_SHOW_TRACKING_FRAGMENT) {
+        if (intent?.action == ACTION_SHOW_TRACKING_FRAGMENT) {
             navHostFragment.findNavController().navigate(R.id.action_global_trackingFragment)
         }
     }
