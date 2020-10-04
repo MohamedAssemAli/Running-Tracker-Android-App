@@ -64,7 +64,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         })
         TrackingService.timeRunInMillis.observe(viewLifecycleOwner, {
             currentTimeMillis = it
-            tvTimer.text = TrackingUtility.getFormattedStopWatchTime(currentTimeMillis, true)
+            tvTimer.text = TrackingUtility.getFormattedStopWatchTime(currentTimeMillis)
         })
     }
 
