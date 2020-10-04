@@ -8,4 +8,5 @@
         <item>Calories Burned</item>
     </string-array>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyB3PpsI0WGPR_WPhvpaLjrw68Omhv10IS0</string>
+    <string name="cancel_run">Cancel Run</string>
 </resources>
