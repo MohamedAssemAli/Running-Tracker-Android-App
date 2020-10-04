@@ -39,6 +39,19 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
         super.onViewCreated(view, savedInstanceState)
         requestPermissions()
         setupRecyclerView()
+        setupSpinner()
+        fab.setOnClickListener {
+            findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
+        }
+    }
+
+    private fun setupRecyclerView() = rvRuns.apply {
+        runsAdapter = RunsAdapter()
+        adapter = runsAdapter
+        layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun setupSpinner() {
         when (viewModel.sortType) {
             SortType.DATE -> spFilter.setSelection(0)
             SortType.RUNNING_TIME -> spFilter.setSelection(1)
@@ -69,15 +82,6 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
         viewModel.runs.observe(viewLifecycleOwner, Observer {
             runsAdapter.submitList(it)
         })
-        fab.setOnClickListener {
-            findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
-        }
-    }
-
-    private fun setupRecyclerView() = rvRuns.apply {
-        runsAdapter = RunsAdapter()
-        adapter = runsAdapter
-        layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun requestPermissions() {
