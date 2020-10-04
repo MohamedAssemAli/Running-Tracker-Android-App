@@ -1,7 +1,5 @@
 package com.assem.runningtracker.util
 
-import android.graphics.Color
-
 
 /**
  * Created by Mohamed Assem on 15-Sep-20.
@@ -24,4 +22,9 @@ object Constants {
     const val POLYLINE_WIDTH = 8f
     const val MAP_ZOOM = 15f
     const val TIMER_UPDATE_INTERVAL = 50L
+    const val SHARED_PREFERENCES_NAME = "sharedPref"
+    const val KEY_NAME = "key_name"
+    const val KEY__WEIGHT = "key__weight"
+    const val KEY_FIRST_TIME_TOGGLE = "key_first_time_toggle"
+
 }
