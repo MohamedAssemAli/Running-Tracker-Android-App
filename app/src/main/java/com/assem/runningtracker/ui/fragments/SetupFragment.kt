@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.assem.runningtracker.R
 import com.assem.runningtracker.util.Constants.KEY_FIRST_TIME_TOGGLE
 import com.assem.runningtracker.util.Constants.KEY_NAME
-import com.assem.runningtracker.util.Constants.KEY__WEIGHT
+import com.assem.runningtracker.util.Constants.KEY_WEIGHT
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -62,7 +62,7 @@ class SetupFragment : Fragment(R.layout.fragment_setup) {
             return false
         sharedPref.edit()
             .putString(KEY_NAME, name)
-            .putFloat(KEY__WEIGHT, weight.toFloat())
+            .putFloat(KEY_WEIGHT, weight.toFloat())
             .putBoolean(KEY_FIRST_TIME_TOGGLE, false)
             .apply()
         val toolbarText = "Let's go, $name"
